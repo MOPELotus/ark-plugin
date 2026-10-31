@@ -2,6 +2,7 @@ import { getTargetUid } from '../../miao-plugin/apps/profile/ProfileCommon.js'
 import safeGsCfg from '../model/safeGsCfg.js'
 import fs from 'node:fs'
 import { ArkApi, AkashaApi } from '../model/api.js'
+import { getDamageRank } from '../model/rankResponse.js'
 import { getStygianVersion, getStygianPeriod } from '../model/calcVersion.js'
 import { Button, ProfileRank, Player, Character, Avatar } from '../../miao-plugin/models/index.js'
 import { Cfg, Common } from '../components/index.js'
@@ -391,7 +392,9 @@ export class characterRank extends plugin {
     logger.debug(id)
     if (!name || !id) return true
     let characterName = safeGsCfg.roleIdToName(id)
-    let ret = await ArkApi.req('rank/specific', { id, percent: 0 })
+    const response = await ArkApi.req('rank/specific', { id, percent: 0 })
+    // 新接口返回 [圣遗物排名, 伤害排名]，兼容旧接口的单对象响应。
+    const ret = getDamageRank(response)
     if (ret.retcode === 100) {
       // eslint-disable-next-line no-return-await
       return await Common.render('graph/stats', {

@@ -655,7 +655,7 @@ const ArkInit = {
             const rank = [item?.rank || '暂无数据', item?.percent || '暂无数据', item?.rank ? `${item?.rank} (${item?.percent}%)` : '暂无数据'][rankType]
             if (queryType === 3) {
               scoreAndRank[idx] = rank
-              selfRank.push(item?.percent || -100, item?.score || -100)
+              selfRank.push(item?.percent ?? -100, item?.score ?? -100)
             } else {
               dmgCalc.dmgData.push({ title: title + titleSuffix, unit: rank })
             }
@@ -712,6 +712,7 @@ const ArkInit = {
           attr,
           elem: char.elem,
           path: char.weapon,
+          hsr_paths: char.weapon,
           dmgCalc,
           artisDetail,
           artisKeyTitle,
